@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>建設SSW 用語フラッシュカード</title>
+<style>
+  :root {
+    --blue: #185FA5;
+    --blue-dark: #0e4070;
+    --blue-light: #E6F1FB;
+    --blue-mid: #a8ccef;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --gray-light: #f3f4f6;
+    --text: #1f2937;
+    --text-sub: #6b7280;
+    --shadow: 0 4px 20px rgba(0,0,0,0.12);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Noto Sans JP', sans-serif;
+    background: #eef4fc;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: var(--blue);
+    color: white;
+    padding: 14px 16px 12px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(24,95,165,0.35);
+  }
+  .header-inner { max-width: 600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .header-title { font-size: 1.05rem; font-weight: bold; line-height: 1.3; }
+  .header-title small { display: block; font-size: 0.7rem; font-weight: normal; opacity: 0.85; margin-top: 1px; }
+  .header-count {
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 0.8rem; font-weight: bold; white-space: nowrap;
+  }
+
+  /* ===== CATEGORIES ===== */
+  .cat-wrap {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-x: auto; white-space: nowrap;
+    padding: 10px 12px;
+    scrollbar-width: none;
+  }
+  .cat-wrap::-webkit-scrollbar { display: none; }
+  .cat-inner { display: inline-flex; gap: 8px; }
+  .cat-btn {
+    padding: 6px 14px; border-radius: 20px; border: none; cursor: pointer;
+    font-size: 0.78rem; font-weight: bold;
+    background: var(--gray-light); color: var(--gray);
+    transition: all .2s; white-space: nowrap;
+  }
+  .cat-btn:hover { background: var(--blue-light); color: var(--blue); }
+  .cat-btn.active { background: var(--blue); color: white; }
+
+  /* ===== MAIN ===== */
+  main { max-width: 600px; margin: 0 auto; padding: 20px 16px 100px; }
+
+  /* ===== PROGRESS ===== */
+  .progress-area { margin-bottom: 16px; }
+  .progress-top { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-sub); margin-bottom: 6px; }
+  .progress-bar { background: #c3ddf5; border-radius: 6px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--blue); border-radius: 6px; transition: width .4s; }
+
+  /* ===== CARD ===== */
+  .card-area { perspective: 1200px; margin-bottom: 20px; cursor: pointer; }
+  .card-inner {
+    position: relative; width: 100%;
+    transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+    transform-style: preserve-3d;
+  }
+  .card-area.flipped .card-inner { transform: rotateY(180deg); }
+
+  .card-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    min-height: 260px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .card-front {
+    background: white;
+  }
+  .card-back {
+    background: var(--blue);
+    color: white;
+    position: absolute; top: 0; left: 0; width: 100%;
+    transform: rotateY(180deg);
+  }
+
+  /* front */
+  .card-cat-tag {
+    display: inline-block;
+    background: var(--blue-light); color: var(--blue);
+    border-radius: 10px; padding: 3px 10px;
+    font-size: 0.7rem; font-weight: bold; margin-bottom: 20px;
+  }
+  .card-term {
+    text-align: center; flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+  }
+  .term-kanji {
+    font-size: 2.2rem; font-weight: bold; line-height: 1.3; color: var(--text);
+  }
+  .term-reading {
+    font-size: 0.9rem; color: var(--text-sub);
+  }
+  .card-hint {
+    text-align: center; font-size: 0.72rem; color: var(--text-sub);
+    opacity: 0.7; margin-top: 10px;
+  }
+  .flip-icon { font-size: 1rem; }
+
+  /* back */
+  .back-cat-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.2); color: white;
+    border-radius: 10px; padding: 3px 10px;
+    font-size: 0.7rem; font-weight: bold; margin-bottom: 16px;
+  }
+  .back-term {
+    font-size: 1.3rem; font-weight: bold; margin-bottom: 16px;
+    text-align: center;
+  }
+  .back-def-label { font-size: 0.68rem; opacity: 0.75; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .back-def-ja {
+    font-size: 0.88rem; line-height: 1.7;
+    background: rgba(255,255,255,0.15); border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 14px;
+  }
+  .back-def-id {
+    font-size: 0.82rem; line-height: 1.6;
+    background: rgba(255,255,255,0.1); border-radius: 10px;
+    padding: 10px 14px; border-left: 3px solid rgba(255,255,255,0.4);
+  }
+  .id-lang { font-size: 0.65rem; opacity: 0.7; display: block; margin-bottom: 3px; }
+
+  /* ===== CONTROLS ===== */
+  .controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ctrl-btn {
+    width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer;
+    font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+    transition: all .2s; font-weight: bold;
+  }
+  .ctrl-btn:hover { transform: scale(1.08); }
+  .btn-prev { background: var(--gray-light); color: var(--gray); }
+  .btn-prev:hover { background: #e5e7eb; }
+  .btn-next { background: var(--blue); color: white; box-shadow: 0 4px 14px rgba(24,95,165,0.4); }
+  .btn-next:hover { background: var(--blue-dark); }
+  .card-num { font-size: 1rem; font-weight: bold; color: var(--text-sub); text-align: center; flex: 1; }
+
+  /* ===== BOTTOM TOOLBAR ===== */
+  .bottom-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; border-top: 1px solid #e5e7eb;
+    padding: 10px 16px 16px;
+    display: flex; gap: 10px; justify-content: center;
+    max-width: 600px; margin: 0 auto;
+  }
+  .bottom-btn {
+    flex: 1; padding: 10px 0; border-radius: 12px; border: none; cursor: pointer;
+    font-size: 0.82rem; font-weight: bold; transition: all .2s;
+  }
+  .btn-shuffle { background: var(--blue-light); color: var(--blue); }
+  .btn-shuffle:hover { background: var(--blue-mid); }
+  .btn-reset { background: #fff3e0; color: #d97706; }
+  .btn-reset:hover { background: #ffe0b2; }
+  .btn-mark { background: var(--gray-light); color: var(--gray); }
+  .btn-mark.marked { background: #fef3c7; color: #d97706; }
+  .btn-mark:hover { background: #e5e7eb; }
+
+  /* ===== RESULT PANEL ===== */
+  .result-panel {
+    display: none; text-align: center;
+    background: white; border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 36px 24px;
+  }
+  .result-panel.show { display: block; }
+  .result-panel h2 { font-size: 1.5rem; color: var(--blue); margin-bottom: 10px; }
+  .result-panel p { color: var(--text-sub); font-size: 0.9rem; margin-bottom: 20px; }
+  .result-panel button {
+    background: var(--blue); color: white; border: none;
+    padding: 12px 32px; border-radius: 30px; font-size: 0.95rem; cursor: pointer;
+    font-weight: bold; box-shadow: 0 4px 14px rgba(24,95,165,0.4);
+  }
+
+  /* ===== EMPTY ===== */
+  .empty-msg {
+    text-align: center; padding: 60px 20px;
+    color: var(--text-sub); font-size: 0.9rem;
+  }
+
+  /* ===== LOGIN OVERLAY ===== */
+  #loginOverlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(160deg, #0a3a6e 0%, #185FA5 55%, #3a8fd4 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .login-box {
+    background: white; border-radius: 24px;
+    padding: 40px 32px; width: 100%; max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    text-align: center;
+  }
+  .login-logo { font-size: 2.6rem; margin-bottom: 8px; }
+  .login-title { font-size: 1.25rem; font-weight: bold; color: var(--text); margin-bottom: 4px; }
+  .login-sub { font-size: 0.78rem; color: var(--text-sub); margin-bottom: 28px; line-height: 1.5; }
+  .login-label {
+    text-align: left; font-size: 0.78rem; font-weight: bold;
+    color: var(--text-sub); margin-bottom: 6px; display: block;
+  }
+  .login-input {
+    width: 100%; padding: 13px 16px; border-radius: 12px;
+    border: 2px solid #e5e7eb; font-size: 1rem;
+    outline: none; transition: border-color .2s;
+    font-family: inherit; letter-spacing: 0.1em; text-align: center;
+  }
+  .login-input:focus { border-color: var(--blue); }
+  .login-btn {
+    width: 100%; margin-top: 16px; padding: 14px;
+    background: var(--blue); color: white; border: none;
+    border-radius: 30px; font-size: 1rem; font-weight: bold;
+    cursor: pointer; box-shadow: 0 4px 14px rgba(24,95,165,0.4);
+    transition: background .2s;
+  }
+  .login-btn:hover { background: var(--blue-dark); }
+  .login-error {
+    display: none; margin-top: 12px; padding: 10px 14px;
+    background: #fee2e2; color: #dc2626; border-radius: 10px;
+    font-size: 0.82rem; font-weight: bold;
+  }
+  .login-error.show { display: block; }
+  .login-note { font-size: 0.7rem; color: #9ca3af; margin-top: 18px; line-height: 1.5; }
+
+  /* ===== GLOBAL RUBY TOGGLE BAR ===== */
+  .ruby-bar {
+    background: #f9fafb; border-bottom: 1px solid #e5e7eb;
+    padding: 6px 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  }
+  .ruby-bar-label { font-size: 0.72rem; color: var(--text-sub); }
+  .ruby-toggle-wrap {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ruby-toggle-switch {
+    position: relative;
+    width: 46px; height: 26px;
+    background: #d1d5db; border-radius: 13px;
+    border: none; cursor: pointer;
+    transition: background .25s;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .ruby-toggle-switch.on { background: var(--blue); }
+  .ruby-toggle-knob {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 20px; height: 20px;
+    border-radius: 50%; background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    transition: transform .25s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: bold; color: #9ca3af;
+    pointer-events: none;
+  }
+  .ruby-toggle-switch.on .ruby-toggle-knob {
+    transform: translateX(20px);
+    color: var(--blue);
+  }
+  .ruby-status-text {
+    font-size: 0.72rem; font-weight: bold; color: var(--text-sub);
+    min-width: 24px;
+    transition: color .2s;
+  }
+  .ruby-status-text.on { color: var(--blue); }
+  ruby { display: ruby; }
+  rt {
+    display: ruby-text;
+    font-size: 0.5em;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+  }
+  .term-kanji ruby rt { font-size: 0.38em; }
+
+  /* ===== MODE TABS ===== */
+  .mode-tabs {
+    background: white; border-bottom: 2px solid #e5e7eb;
+    display: flex; max-width: 600px; margin: 0 auto;
+  }
+  .mode-tab {
+    flex: 1; padding: 11px 0; border: none; background: none; cursor: pointer;
+    font-size: 0.88rem; font-weight: bold; color: var(--gray);
+    border-bottom: 3px solid transparent; margin-bottom: -2px;
+    transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .mode-tab:hover { color: var(--blue); }
+  .mode-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  /* ===== QUIZ SCREEN ===== */
+  #quizScreen { display: none; }
+  #quizScreen.active { display: block; }
+  #flashScreen { display: block; }
+  #flashScreen.hidden { display: none; }
+
+  .quiz-score-bar {
+    background: white; border-radius: 12px; padding: 14px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .quiz-score-nums { font-size: 0.82rem; color: var(--text-sub); white-space: nowrap; }
+  .quiz-score-nums strong { color: var(--text); font-size: 1rem; }
+  .quiz-mini-bar { flex: 1; background: #e5e7eb; border-radius: 6px; height: 8px; overflow: hidden; }
+  .quiz-mini-fill { height: 100%; background: var(--blue); border-radius: 6px; transition: width .4s; }
+  .quiz-score-pct { font-size: 0.9rem; font-weight: bold; color: var(--blue); white-space: nowrap; }
+
+  .quiz-qnum { font-size: 0.72rem; color: var(--text-sub); margin-bottom: 10px; }
+
+  .quiz-question-card {
+    background: white; border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 24px 22px; margin-bottom: 16px;
+  }
+  .quiz-qtype {
+    display: inline-block; font-size: 0.68rem; font-weight: bold;
+    background: var(--blue-light); color: var(--blue);
+    border-radius: 8px; padding: 3px 10px; margin-bottom: 14px;
+  }
+  .quiz-question-text {
+    font-size: 1.05rem; font-weight: bold; line-height: 1.6; color: var(--text);
+  }
+  .quiz-question-sub {
+    font-size: 0.78rem; color: var(--text-sub); margin-top: 6px; line-height: 1.5;
+  }
+  .quiz-id-toggle {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 14px; padding: 6px 12px;
+    border: 1.5px dashed #9ca3af; border-radius: 20px;
+    background: none; cursor: pointer; font-size: 0.75rem;
+    color: #9ca3af; transition: all .2s; font-weight: bold;
+  }
+  .quiz-id-toggle:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .quiz-id-toggle.active { border-color: #f59e0b; color: #b45309; background: #fef9c3; border-style: solid; }
+  .quiz-id-box {
+    display: none; margin-top: 10px;
+    background: #fffbeb; border-left: 3px solid #f59e0b;
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 0.82rem; color: #78350f; line-height: 1.6;
+  }
+  .quiz-id-box.show { display: block; }
+  .quiz-id-box .id-label { font-size: 0.65rem; font-weight: bold; color: #b45309; display: block; margin-bottom: 4px; }
+
+  .quiz-choice ruby { display: ruby; }
+  .quiz-choice rt { display: ruby-text; font-size: 0.5em; font-weight: normal; line-height: 1; }
+
+  .quiz-ruby-row {
+    display: flex; justify-content: flex-end; margin-bottom: 8px;
+  }
+
+  .quiz-choices { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-choice {
+    width: 100%; padding: 14px 18px; border-radius: 12px;
+    border: 2px solid #e5e7eb; background: white; cursor: pointer;
+    font-size: 0.88rem; font-weight: bold; color: var(--text);
+    text-align: left; line-height: 1.6; transition: all .18s;
+  }
+  .quiz-choice:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+  .quiz-choice.correct { border-color: #16a34a; background: #dcfce7; color: #15803d; }
+  .quiz-choice.wrong   { border-color: #dc2626; background: #fee2e2; color: #dc2626; }
+  .quiz-choice.show-correct { border-color: #16a34a; background: #dcfce7; color: #15803d; }
+  .quiz-choice:disabled { cursor: default; }
+
+  .quiz-feedback {
+    display: none; border-radius: 12px; padding: 14px 18px; margin-top: 12px;
+    font-size: 0.85rem; line-height: 1.6;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok  { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+  .quiz-feedback.ng  { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+  .quiz-feedback .fb-answer { font-weight: bold; margin-bottom: 4px; font-size: 0.95rem; }
+  .quiz-feedback .fb-def { font-size: 0.82rem; margin-top: 6px; opacity: 0.85; }
+
+  .quiz-next-btn {
+    display: none; width: 100%; margin-top: 14px;
+    padding: 14px; border-radius: 30px; border: none; cursor: pointer;
+    background: var(--blue); color: white; font-size: 0.95rem; font-weight: bold;
+    box-shadow: 0 4px 14px rgba(24,95,165,0.35); transition: background .2s;
+  }
+  .quiz-next-btn:hover { background: var(--blue-dark); }
+  .quiz-next-btn.show { display: block; }
+
+  /* quiz result */
+  .quiz-result {
+    display: none; text-align: center; background: white;
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 36px 24px;
+  }
+  .quiz-result.show { display: block; }
+  .quiz-result-emoji { font-size: 3rem; margin-bottom: 12px; }
+  .quiz-result h2 { font-size: 1.5rem; color: var(--text); margin-bottom: 6px; }
+  .quiz-result .result-score {
+    font-size: 3rem; font-weight: bold; color: var(--blue); margin: 16px 0 4px;
+  }
+  .quiz-result .result-label { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 20px; }
+  .result-breakdown {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
+  }
+  .result-cell {
+    background: var(--gray-light); border-radius: 10px; padding: 12px 8px;
+  }
+  .result-cell .rc-num { font-size: 1.4rem; font-weight: bold; }
+  .result-cell .rc-label { font-size: 0.72rem; color: var(--text-sub); margin-top: 2px; }
+  .result-cell.ok .rc-num { color: #16a34a; }
+  .result-cell.ng .rc-num { color: #dc2626; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn {
+    padding: 13px 0; border-radius: 30px; border: none; cursor: pointer;
+    font-size: 0.92rem; font-weight: bold; transition: all .2s;
+  }
+  .result-btn.primary { background: var(--blue); color: white; box-shadow: 0 4px 14px rgba(24,95,165,0.35); }
+  .result-btn.secondary { background: #fff3e0; color: #d97706; }
+  .result-btn.tertiary { background: var(--gray-light); color: var(--gray); }
+
+  /* quiz start screen */
+  .quiz-start-screen {
+    text-align: center; background: white; border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 36px 24px;
+  }
+  .quiz-start-screen h2 { font-size: 1.3rem; color: var(--text); margin-bottom: 8px; }
+  .quiz-start-screen p { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 24px; line-height: 1.6; }
+  .quiz-start-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .quiz-opt-btn {
+    padding: 14px 18px; border-radius: 12px; border: 2px solid #e5e7eb;
+    background: white; cursor: pointer; font-size: 0.88rem; font-weight: bold;
+    text-align: left; display: flex; align-items: center; gap: 10px; transition: all .2s;
+  }
+  .quiz-opt-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+  .quiz-opt-btn.selected { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+  .quiz-opt-btn .opt-icon { font-size: 1.3rem; }
+  .quiz-opt-btn .opt-text { line-height: 1.3; }
+  .quiz-opt-btn .opt-sub { font-size: 0.72rem; font-weight: normal; color: var(--text-sub); display: block; }
+  .quiz-start-btn {
+    width: 100%; padding: 14px; border-radius: 30px; border: none; cursor: pointer;
+    background: var(--blue); color: white; font-size: 1rem; font-weight: bold;
+    box-shadow: 0 4px 14px rgba(24,95,165,0.35); transition: background .2s;
+  }
+  .quiz-start-btn:hover { background: var(--blue-dark); }
+
+  /* bottom bar quiz mode */
+  .bottom-bar-quiz {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; border-top: 1px solid #e5e7eb;
+    padding: 10px 16px 16px;
+    display: none; gap: 10px; justify-content: center;
+    max-width: 600px; margin: 0 auto;
+  }
+  .bottom-bar-quiz.active { display: flex; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 400px) {
+    .term-kanji { font-size: 1.8rem; }
+    .card-face { padding: 22px 18px; min-height: 240px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">🏗️</div>
+    <div class="login-title">建設SSW 用語カード</div>
+    <div class="login-sub">特定技能1号「建設・ライフライン設備」試験対策<br>Kartu Kosakata Konstruksi SSW</div>
+    <label class="login-label" for="loginInput">パスワード / Password</label>
+    <div style="position:relative;">
+      <input class="login-input" id="loginInput" type="password"
+        placeholder="パスワードを入力"
+        style="padding-right:48px;"
+        onkeydown="if(event.key==='Enter') doLogin()" />
+      <button id="togglePwBtn" onclick="togglePwVisibility()"
+        type="button"
+        style="position:absolute; right:12px; top:50%; transform:translateY(-50%);
+               background:none; border:none; cursor:pointer; font-size:1.2rem;
+               color:#9ca3af; padding:4px; line-height:1;"
+        title="パスワードを表示/非表示">👁</button>
+    </div>
+    <div class="login-error" id="loginError">❌ パスワードが違います / Password salah</div>
+    <button class="login-btn" onclick="doLogin()">ログイン／Masuk</button>
+    <div class="login-note">このデバイスでは一度入力すると次回から不要です。<br>Di perangkat ini, cukup masukkan sekali.</div>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="header-title">
+      建設SSW 用語カード
+      <small>特定技能1号「建設・ライフライン設備」試験対策</small>
+    </div>
+    <div class="header-count" id="headerCount">0 / 0</div>
+  </div>
+</header>
+
+<div style="background:white; border-bottom:1px solid #e5e7eb;">
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tabFlash" onclick="switchMode('flash')">🃏 フラッシュカード</button>
+    <button class="mode-tab" id="tabQuiz"  onclick="switchMode('quiz')">📝 4択練習</button>
+  </div>
+</div>
+
+<div class="ruby-bar">
+  <span class="ruby-bar-label">ふりがな</span>
+  <div class="ruby-toggle-wrap">
+    <button class="ruby-toggle-switch" id="globalRubySwitch" onclick="toggleGlobalRuby()">
+      <div class="ruby-toggle-knob">ふ</div>
+    </button>
+    <span class="ruby-status-text" id="globalRubyText">OFF</span>
+  </div>
+</div>
+
+<div class="cat-wrap" id="catWrap">
+  <div class="cat-inner" id="catButtons"></div>
+</div>
+
+<main>
+
+<!-- ===== QUIZ SCREEN ===== -->
+<div id="quizScreen">
+
+  <!-- Start screen -->
+  <div class="quiz-start-screen" id="quizStartScreen">
+    <h2>📝 4択練習</h2>
+    <p>出題形式と問題数を選んでスタート！<br>カテゴリは上のタブで絞り込めます。</p>
+    <div id="quizCatBadge" style="display:inline-flex; align-items:center; gap:6px; background:var(--blue-light); color:var(--blue-dark); border-radius:20px; padding:5px 14px; font-size:0.82rem; font-weight:bold; margin-bottom:14px;">
+      📂 <span id="quizCatName">すべて</span>（<span id="quizCatCount">109</span>枚）
+    </div>
+    <div class="quiz-start-options">
+      <button class="quiz-opt-btn selected" id="optMixed" onclick="selectQtype('mixed')">
+        <span class="opt-icon">🔀</span>
+        <span class="opt-text">ミックス出題
+          <span class="opt-sub">「用語→意味」と「意味→用語」をランダムで出題</span>
+          <span class="opt-sub" style="color:#6b7280; margin-top:2px;">Campuran: "istilah→arti" dan "arti→istilah" secara acak</span>
+        </span>
+      </button>
+      <button class="quiz-opt-btn" id="optTerm2Def" onclick="selectQtype('term2def')">
+        <span class="opt-icon">🔍</span>
+        <span class="opt-text">用語の意味を選ぶ
+          <span class="opt-sub">用語が表示され、4つの意味から選ぶ</span>
+          <span class="opt-sub" style="color:#6b7280; margin-top:2px;">Istilah ditampilkan → pilih artinya dari 4 pilihan</span>
+        </span>
+      </button>
+      <button class="quiz-opt-btn" id="optDef2Term" onclick="selectQtype('def2term')">
+        <span class="opt-icon">💬</span>
+        <span class="opt-text">意味から用語を選ぶ
+          <span class="opt-sub">説明文が表示され、4つの用語から選ぶ</span>
+          <span class="opt-sub" style="color:#6b7280; margin-top:2px;">Penjelasan ditampilkan → pilih istilahnya dari 4 pilihan</span>
+        </span>
+      </button>
+    </div>
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+      <button class="quiz-opt-btn" id="qnum10" onclick="selectQnum(10)" style="flex:1; text-align:center; padding:10px;">10問</button>
+      <button class="quiz-opt-btn selected" id="qnum20" onclick="selectQnum(20)" style="flex:1; text-align:center; padding:10px;">20問</button>
+      <button class="quiz-opt-btn" id="qnumAll" onclick="selectQnum(0)" style="flex:1; text-align:center; padding:10px;">全問</button>
+    </div>
+    <button class="quiz-start-btn" onclick="startQuiz()">スタート ›</button>
+  </div>
+
+  <!-- Question screen -->
+  <div id="quizQuestionScreen" style="display:none;">
+    <div class="quiz-score-bar">
+      <div class="quiz-score-nums"><strong id="qScoreCorrect">0</strong> / <span id="qScoreTotal">0</span> 正解</div>
+      <div class="quiz-mini-bar"><div class="quiz-mini-fill" id="qMiniFill" style="width:0%"></div></div>
+      <div class="quiz-score-pct" id="qScorePct">0%</div>
+    </div>
+
+    <div class="quiz-qnum" id="qNumLabel">第1問 / 20問</div>
+
+    <div class="quiz-question-card">
+      <span class="quiz-qtype" id="qTypeLabel">用語→意味</span>
+      <div class="quiz-question-text" id="qQuestionText">-</div>
+      <div class="quiz-question-sub" id="qQuestionSub"></div>
+      <button class="quiz-id-toggle" id="qIdToggleBtn" onclick="toggleQuizId()">
+        🇮🇩 <span id="qIdToggleLabel">インドネシア語を表示</span>
+      </button>
+      <div class="quiz-id-box" id="qIdBox">
+        <span class="id-label">🇮🇩 Bahasa Indonesia</span>
+        <span id="qIdText"></span>
+      </div>
+    </div>
+
+    <div class="quiz-ruby-row" id="qRubyRow" style="gap:8px; justify-content:flex-end;">
+      <button class="quiz-id-toggle" id="qChoiceIdToggleBtn" onclick="toggleChoiceId()" style="display:none;">
+        🇮🇩 <span id="qChoiceIdToggleLabel">インドネシア語なし</span>
+      </button>
+    </div>
+
+    <div class="quiz-choices" id="qChoices">
+      <button class="quiz-choice" id="choice0" onclick="handleAnswer(0)"></button>
+      <button class="quiz-choice" id="choice1" onclick="handleAnswer(1)"></button>
+      <button class="quiz-choice" id="choice2" onclick="handleAnswer(2)"></button>
+      <button class="quiz-choice" id="choice3" onclick="handleAnswer(3)"></button>
+    </div>
+
+    <div class="quiz-feedback" id="qFeedback">
+      <div class="fb-answer" id="fbAnswer"></div>
+      <div class="fb-def" id="fbDef"></div>
+      <div class="fb-def" id="fbDefId" style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(0,0,0,0.08); font-size:0.78rem; opacity:0.8;">
+        <span style="font-size:0.65rem; font-weight:bold; opacity:0.7; display:block; margin-bottom:2px;">🇮🇩 Bahasa Indonesia</span>
+        <span id="fbDefIdText"></span>
+      </div>
+    </div>
+
+    <button class="quiz-next-btn" id="qNextBtn" onclick="nextQuizQuestion()">次の問題 ›</button>
+  </div>
+
+  <!-- Result screen -->
+  <div class="quiz-result" id="quizResultScreen">
+    <div class="quiz-result-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">お疲れ様でした！</h2>
+    <div class="result-score" id="resultScoreDisplay">0 / 0</div>
+    <div class="result-label" id="resultScoreLabel">正解率 0%</div>
+    <div class="result-breakdown">
+      <div class="result-cell ok">
+        <div class="rc-num" id="rcCorrect">0</div>
+        <div class="rc-label">✅ 正解</div>
+      </div>
+      <div class="result-cell ng">
+        <div class="rc-num" id="rcWrong">0</div>
+        <div class="rc-label">❌ 不正解</div>
+      </div>
+    </div>
+    <div class="result-btns">
+      <button class="result-btn primary" onclick="retryWrong()" id="retryWrongBtn">❌ 間違えた問題だけ復習</button>
+      <button class="result-btn secondary" onclick="startQuiz()">🔄 同じ設定でもう一度</button>
+      <button class="result-btn tertiary" onclick="showQuizStart()">⚙️ 設定に戻る</button>
+    </div>
+  </div>
+
+</div><!-- /quizScreen -->
+
+<!-- ===== FLASH SCREEN ===== -->
+<div id="flashScreen">
+  <div class="progress-area">
+    <div class="progress-top">
+      <span id="progressLabel">学習中...</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div id="cardArea" class="card-area" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <!-- front -->
+      <div class="card-face card-front" id="cardFront">
+        <div>
+          <span class="card-cat-tag" id="frontCat">カテゴリ</span>
+        </div>
+        <div class="card-term">
+          <div class="term-kanji" id="termKanji">-</div>
+          <div class="term-reading" id="termReading">-</div>
+        </div>
+        <div class="card-hint">カードをタップして意味を確認 <span class="flip-icon">↕</span></div>
+      </div>
+      <!-- back -->
+      <div class="card-face card-back" id="cardBack">
+        <div>
+          <span class="back-cat-tag" id="backCat">カテゴリ</span>
+          <div class="back-term" id="backTerm">-</div>
+        </div>
+        <div>
+          <div class="back-def-label">🇯🇵 日本語</div>
+          <div class="back-def-ja" id="defJa">-</div>
+          <div class="back-def-label">🇮🇩 Bahasa Indonesia</div>
+          <div class="back-def-id">
+            <span class="id-lang">Terjemahan</span>
+            <span id="defId">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="ctrl-btn btn-prev" onclick="prevCard()">‹</button>
+    <div class="card-num" id="cardNum">- / -</div>
+    <button class="ctrl-btn btn-next" onclick="nextCard()">›</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <h2>🎉 完了！</h2>
+    <p id="resultMsg">全カードを見終わりました。</p>
+    <button onclick="restartAll()">もう一度</button>
+  </div>
+
+</div><!-- /flashScreen -->
+
+</main>
+
+<div class="bottom-bar" id="bottomBarFlash">
+  <button class="bottom-btn btn-shuffle" onclick="shuffleCards()">🔀 シャッフル</button>
+  <button class="bottom-btn btn-mark" id="markBtn" onclick="toggleMark()">⭐ スター</button>
+  <button class="bottom-btn btn-reset" onclick="resetProgress()">↺ リセット</button>
+</div>
+
+<div class="bottom-bar-quiz" id="bottomBarQuiz">
+  <button class="bottom-btn btn-shuffle" onclick="showQuizStart()" style="background:var(--blue-light);color:var(--blue);">⚙️ 設定</button>
+  <button class="bottom-btn btn-reset" onclick="switchMode('flash')" style="background:var(--gray-light);color:var(--gray);">🃏 カードへ</button>
+</div>
+
+<script>
+const CARDS = [
+  { id:1,  category:"配管", term:"配管", reading:"はいかん", definition_ja:"水・ガス・空気などを流すための管を設置する工事", definition_id:"Pekerjaan memasang pipa untuk mengalirkan air, gas, dan udara" },
+  { id:2,  category:"配管", term:"給水管", reading:"きゅうすいかん", definition_ja:"建物に水を供給するための管", definition_id:"Pipa yang mengalirkan air bersih ke dalam bangunan" },
+  { id:3,  category:"配管", term:"排水管", reading:"はいすいかん", definition_ja:"汚水や雨水を外に流すための管", definition_id:"Pipa yang mengalirkan air kotor dan air hujan ke luar bangunan" },
+  { id:4,  category:"配管", term:"給湯管", reading:"きゅうとうかん", definition_ja:"温水（お湯）を供給するための管", definition_id:"Pipa yang mengalirkan air panas ke titik penggunaan" },
+  { id:5,  category:"配管", term:"ガス管", reading:"ガスかん", definition_ja:"都市ガスやプロパンガスを供給するための管", definition_id:"Pipa yang mengalirkan gas kota atau gas propana" },
+  { id:6,  category:"配管", term:"バルブ", reading:"バルブ（弁）", definition_ja:"流体の流れを止めたり調節したりする部品", definition_id:"Katup: komponen yang menghentikan atau mengatur aliran fluida" },
+  { id:7,  category:"配管", term:"継手", reading:"つぎて", definition_ja:"パイプとパイプをつなぐための部品", definition_id:"Fitting: komponen penyambung antara dua pipa" },
+  { id:8,  category:"配管", term:"フランジ", reading:"フランジ", definition_ja:"ボルトで締め付けてパイプをつなぐ鍔状の部品", definition_id:"Flens: komponen berbentuk piringan untuk menyambung pipa dengan baut" },
+  { id:9,  category:"配管", term:"エルボ", reading:"エルボ", definition_ja:"配管を90度または45度に曲げるための継手", definition_id:"Elbow: fitting untuk membelokkan arah pipa 90° atau 45°" },
+  { id:10, category:"配管", term:"チーズ", reading:"チーズ（T字管）", definition_ja:"配管を3方向に分岐させる継手", definition_id:"Tee: fitting percabangan yang membagi pipa menjadi 3 arah" },
+  { id:11, category:"配管", term:"溶接", reading:"ようせつ", definition_ja:"金属を高熱で溶かしてつなぎ合わせる接合方法", definition_id:"Pengelasan: metode penyambungan logam dengan panas tinggi" },
+  { id:12, category:"配管", term:"ねじ接合", reading:"ねじせつごう", definition_ja:"管端にねじを切って締め込む接合方法", definition_id:"Sambungan ulir: metode penyambungan pipa dengan mengencangkan ulir" },
+  { id:13, category:"配管", term:"塩ビ管", reading:"えんびかん（PVCかん）", definition_ja:"塩化ビニール製の軽くて錆びない管", definition_id:"Pipa PVC: pipa ringan dari polivinil klorida yang tidak berkarat" },
+  { id:14, category:"配管", term:"鋼管", reading:"こうかん", definition_ja:"鉄製の丈夫な管（ガス・消火設備などに使用）", definition_id:"Pipa baja: pipa kuat dari besi, digunakan untuk gas dan sprinkler" },
+  { id:15, category:"配管", term:"銅管", reading:"どうかん", definition_ja:"銅製の管（給湯・冷媒配管などに使用）", definition_id:"Pipa tembaga: digunakan untuk pipa air panas dan refrigeran AC" },
+  { id:16, category:"配管", term:"ステンレス管", reading:"ステンレスかん", definition_ja:"さびにくいステンレス鋼製の管", definition_id:"Pipa stainless steel: pipa tahan karat dari baja nirkarat" },
+  { id:17, category:"配管", term:"保温材", reading:"ほおんざい", definition_ja:"管の温度を保つために巻く断熱材", definition_id:"Insulasi pipa: bahan pembungkus pipa untuk menjaga suhu" },
+  { id:18, category:"配管", term:"圧力計", reading:"あつりょくけい", definition_ja:"配管内の水やガスの圧力を測る計器", definition_id:"Manometer: alat ukur tekanan air atau gas di dalam pipa" },
+  { id:19, category:"配管", term:"流量計", reading:"りゅうりょうけい", definition_ja:"配管内を流れる流体の量を測る計器", definition_id:"Flowmeter: alat ukur volume fluida yang mengalir dalam pipa" },
+  { id:20, category:"配管", term:"水圧試験", reading:"すいあつしけん", definition_ja:"配管に水圧をかけて漏れがないか確認する検査", definition_id:"Uji tekanan air: pengujian kebocoran pipa dengan tekanan air" },
+  { id:21, category:"配管", term:"気密試験", reading:"きみつしけん", definition_ja:"ガス管などに空気や窒素を入れて漏れを確認する検査", definition_id:"Uji kebocoran gas: pengujian pipa gas dengan udara atau nitrogen" },
+  { id:22, category:"配管", term:"スリーブ", reading:"スリーブ", definition_ja:"壁や床を貫通する部分に設ける保護管", definition_id:"Sleeve: pipa pelindung pada bagian yang menembus dinding atau lantai" },
+  { id:23, category:"配管", term:"勾配", reading:"こうばい", definition_ja:"排水がスムーズに流れるように管を傾ける角度", definition_id:"Kemiringan: sudut kemiringan pipa agar air dapat mengalir lancar" },
+  { id:24, category:"配管", term:"排水トラップ", reading:"はいすいトラップ", definition_ja:"下水の臭いが上がってこないようにする水の仕組み", definition_id:"Perangkap saluran: segel air yang mencegah bau selokan naik ke dalam" },
+  { id:25, category:"配管", term:"止水栓", reading:"しすいせん", definition_ja:"水の供給を止めるための小型バルブ", definition_id:"Stop kran: katup kecil untuk menghentikan suplai air" },
+  { id:26, category:"電気工事", term:"電線管", reading:"でんせんかん", definition_ja:"電線やケーブルを保護するための管", definition_id:"Konduit: pipa pelindung kabel dan kawat listrik" },
+  { id:27, category:"電気工事", term:"配線", reading:"はいせん", definition_ja:"電気の線を建物内に引き回す工事", definition_id:"Pekerjaan menarik dan memasang kabel listrik di dalam bangunan" },
+  { id:28, category:"電気工事", term:"分電盤", reading:"ぶんでんばん", definition_ja:"建物の電気を各部屋に分けて供給する装置", definition_id:"Panel distribusi listrik yang membagi daya ke setiap ruangan" },
+  { id:29, category:"電気工事", term:"ブレーカー", reading:"ブレーカー（遮断機）", definition_ja:"過電流や漏電のとき自動で電気を切る安全装置", definition_id:"Circuit breaker: alat pengaman yang memutus listrik otomatis saat arus lebih" },
+  { id:30, category:"電気工事", term:"アース", reading:"アース（接地）", definition_ja:"感電を防ぐために電気を地面に逃がす仕組み", definition_id:"Grounding: sistem yang menyalurkan arus berbahaya ke tanah" },
+  { id:31, category:"電気工事", term:"漏電", reading:"ろうでん", definition_ja:"電気が本来の経路以外に流れ出ること", definition_id:"Kebocoran arus: aliran listrik di luar jalur yang seharusnya" },
+  { id:32, category:"電気工事", term:"コンセント", reading:"コンセント", definition_ja:"電気機器のプラグを差し込む接続口", definition_id:"Stopkontak: soket untuk menancapkan colokan perangkat listrik" },
+  { id:33, category:"電気工事", term:"スイッチ", reading:"スイッチ", definition_ja:"照明などの電気のオン・オフを切り替える器具", definition_id:"Saklar: alat untuk menyalakan dan mematikan listrik" },
+  { id:34, category:"電気工事", term:"照明器具", reading:"しょうめいきぐ", definition_ja:"電気を使って光を出す器具（蛍光灯・LEDなど）", definition_id:"Perangkat pencahayaan seperti lampu fluoresen dan LED" },
+  { id:35, category:"電気工事", term:"幹線", reading:"かんせん", definition_ja:"電力を各分電盤まで送る主要な電線", definition_id:"Kabel utama yang menyalurkan daya listrik ke panel distribusi" },
+  { id:36, category:"電気工事", term:"電圧", reading:"でんあつ", definition_ja:"電気を押し出す力の大きさ（単位：ボルト V）", definition_id:"Tegangan listrik: kekuatan yang mendorong arus listrik (satuan: Volt)" },
+  { id:37, category:"電気工事", term:"電流", reading:"でんりゅう", definition_ja:"電気の流れる量（単位：アンペア A）", definition_id:"Arus listrik: jumlah aliran muatan listrik (satuan: Ampere)" },
+  { id:38, category:"電気工事", term:"絶縁", reading:"ぜつえん", definition_ja:"電気が流れないようにゴムや樹脂で覆うこと", definition_id:"Insulasi: melapisi kabel dengan karet atau plastik agar arus tidak bocor" },
+  { id:39, category:"電気工事", term:"検電器", reading:"けんでんき", definition_ja:"電気が流れているかどうかを確認する道具", definition_id:"Detektor tegangan: alat untuk memeriksa apakah ada arus listrik" },
+  { id:40, category:"電気工事", term:"テスター", reading:"テスター（マルチメーター）", definition_ja:"電圧・電流・抵抗を測定する計測器", definition_id:"Multimeter: alat ukur tegangan, arus, dan hambatan listrik" },
+  { id:41, category:"電気工事", term:"電力", reading:"でんりょく", definition_ja:"電気が仕事をする能力（単位：ワット W）", definition_id:"Daya listrik: kemampuan listrik melakukan kerja (satuan: Watt)" },
+  { id:42, category:"電気工事", term:"変圧器", reading:"へんあつき（トランス）", definition_ja:"電圧を高くしたり低くしたりする機器", definition_id:"Trafo (transformator): alat untuk menaikkan atau menurunkan tegangan listrik" },
+  { id:43, category:"電気工事", term:"プルボックス", reading:"プルボックス", definition_ja:"ケーブルを引き入れたり接続したりする分岐ボックス", definition_id:"Pull box: kotak percabangan untuk menarik dan menyambung kabel" },
+  { id:44, category:"電気工事", term:"ケーブルラック", reading:"ケーブルラック", definition_ja:"複数のケーブルをまとめて支持する金属製の棚", definition_id:"Cable rack: rak logam untuk menopang dan mengelompokkan banyak kabel" },
+  { id:45, category:"電気工事", term:"接地抵抗", reading:"せっちていこう", definition_ja:"アースの電気の流れやすさを示す値（低いほど良い）", definition_id:"Hambatan grounding: nilai yang menunjukkan kualitas sistem grounding (makin rendah makin baik)" },
+  { id:46, category:"衛生・空調", term:"給湯器", reading:"きゅうとうき", definition_ja:"水を温めてお湯を供給する機器", definition_id:"Water heater: alat pemanas air untuk menyediakan air panas" },
+  { id:47, category:"衛生・空調", term:"エアコン", reading:"エアコン（空調機）", definition_ja:"空気の温度・湿度を調節する機器", definition_id:"AC (air conditioner): alat pengatur suhu dan kelembaban udara" },
+  { id:48, category:"衛生・空調", term:"冷媒", reading:"れいばい", definition_ja:"エアコンの中を循環して熱を運ぶ物質", definition_id:"Refrigeran: zat yang bersirkulasi dalam AC untuk memindahkan panas" },
+  { id:49, category:"衛生・空調", term:"ダクト", reading:"ダクト（風道）", definition_ja:"空気を送るための金属製の管路", definition_id:"Duct: saluran logam untuk mengalirkan udara dalam sistem HVAC" },
+  { id:50, category:"衛生・空調", term:"換気扇", reading:"かんきせん", definition_ja:"室内の空気を入れ替えるための扇風機型の設備", definition_id:"Kipas ventilasi: perangkat untuk mengganti udara dalam ruangan" },
+  { id:51, category:"衛生・空調", term:"スプリンクラー", reading:"スプリンクラー", definition_ja:"火災時に自動で水を散布する消火設備", definition_id:"Sprinkler: sistem pemadam kebakaran yang menyemprotkan air otomatis" },
+  { id:52, category:"衛生・空調", term:"消火栓", reading:"しょうかせん", definition_ja:"火災時にホースをつないで消火に使う設備", definition_id:"Hidran kebakaran: titik sambungan selang untuk pemadaman api" },
+  { id:53, category:"衛生・空調", term:"衛生設備", reading:"えいせいせつび", definition_ja:"トイレ・洗面台・浴室などの清潔を保つ設備", definition_id:"Fasilitas sanitasi: toilet, wastafel, kamar mandi, dan sejenisnya" },
+  { id:54, category:"衛生・空調", term:"大便器", reading:"だいべんき", definition_ja:"洋式・和式トイレのこと", definition_id:"Kloset: toilet duduk (Western style) maupun toilet jongkok (Japanese style)" },
+  { id:55, category:"衛生・空調", term:"洗面器", reading:"せんめんき", definition_ja:"手や顔を洗うための洗面台（洗面ボウル）", definition_id:"Wastafel: tempat mencuci tangan dan wajah" },
+  { id:56, category:"衛生・空調", term:"浄化槽", reading:"じょうかそう", definition_ja:"下水道がない場所で排水を処理するための設備", definition_id:"Septic tank: instalasi pengolah limbah cair di area tanpa saluran pembuangan" },
+  { id:57, category:"衛生・空調", term:"水道メーター", reading:"すいどうメーター", definition_ja:"使用した水の量を測る計量器", definition_id:"Water meter: alat pencatat jumlah air yang digunakan" },
+  { id:58, category:"衛生・空調", term:"逆止弁", reading:"ぎゃくしべん", definition_ja:"流体が逆流しないようにする弁", definition_id:"Check valve: katup yang mencegah aliran balik fluida" },
+  { id:59, category:"衛生・空調", term:"ポンプ", reading:"ポンプ", definition_ja:"液体や気体を移送するための機械", definition_id:"Pompa: mesin untuk memindahkan cairan atau gas" },
+  { id:60, category:"衛生・空調", term:"貯水槽", reading:"ちょすいそう", definition_ja:"水を一時的に貯めておくためのタンク", definition_id:"Tangki penampung air: tangki untuk menyimpan persediaan air sementara" },
+  { id:61, category:"安全", term:"保護具", reading:"ほごぐ", definition_ja:"作業中に体を守るための道具の総称", definition_id:"Alat Pelindung Diri (APD): semua peralatan untuk melindungi tubuh saat bekerja" },
+  { id:62, category:"安全", term:"ヘルメット", reading:"ヘルメット（保護帽）", definition_ja:"頭部を物の落下や衝撃から守る帽子", definition_id:"Helm pelindung: topi keras untuk melindungi kepala dari benturan atau benda jatuh" },
+  { id:63, category:"安全", term:"安全帯", reading:"あんぜんたい（ハーネス）", definition_ja:"高所作業で落下を防ぐためのベルト型の命綱", definition_id:"Harness keselamatan: sabuk pengaman untuk mencegah jatuh saat kerja di ketinggian" },
+  { id:64, category:"安全", term:"墜落防止", reading:"ついらくぼうし", definition_ja:"高所から人が落ちないようにする安全対策", definition_id:"Pencegahan jatuh: tindakan keselamatan agar pekerja tidak jatuh dari ketinggian" },
+  { id:65, category:"安全", term:"KY活動", reading:"ケーワイかつどう", definition_ja:"作業前に危険を予測して話し合う安全活動", definition_id:"Aktivitas KY (Kiken Yochi): identifikasi bahaya sebelum mulai bekerja" },
+  { id:66, category:"安全", term:"TBM", reading:"ティービーエム（ツールボックスミーティング）", definition_ja:"作業前に短時間で行う安全確認の打ち合わせ", definition_id:"Tool Box Meeting (TBM): rapat singkat sebelum kerja untuk mengecek keselamatan" },
+  { id:67, category:"安全", term:"作業手順書", reading:"さぎょうてじゅんしょ", definition_ja:"安全に作業するための手順をまとめた文書", definition_id:"Prosedur kerja (SOP): dokumen yang merangkum langkah kerja yang aman" },
+  { id:68, category:"安全", term:"立入禁止", reading:"たちいりきんし", definition_ja:"危険なため人が入ってはいけない区域", definition_id:"Dilarang masuk: area terlarang karena berbahaya" },
+  { id:69, category:"安全", term:"作業主任者", reading:"さぎょうしゅにんしゃ", definition_ja:"危険な作業の安全を管理する責任者", definition_id:"Penanggung jawab kerja: orang yang bertanggung jawab atas keselamatan pekerjaan berbahaya" },
+  { id:70, category:"安全", term:"足場", reading:"あしば", definition_ja:"高所で作業するために組む仮設の作業床", definition_id:"Perancah (scaffolding): struktur sementara untuk bekerja di ketinggian" },
+  { id:71, category:"安全", term:"酸欠", reading:"さんけつ（酸素欠乏）", definition_ja:"酸素が薄くなり息ができなくなる危険な状態", definition_id:"Kekurangan oksigen: kondisi berbahaya di mana kadar oksigen terlalu rendah untuk bernapas" },
+  { id:72, category:"安全", term:"感電", reading:"かんでん", definition_ja:"電気が体に流れてショックを受けること", definition_id:"Tersengat listrik: kondisi di mana arus listrik mengalir melalui tubuh" },
+  { id:73, category:"安全", term:"火気厳禁", reading:"かきげんきん", definition_ja:"火や火花を使ってはいけない場所や状況", definition_id:"Dilarang api/percikan: area atau kondisi di mana api dan percikan dilarang" },
+  { id:74, category:"安全", term:"保護メガネ", reading:"ほごメガネ", definition_ja:"目を切粉や薬品から守るための眼鏡", definition_id:"Kacamata pelindung: kacamata untuk melindungi mata dari serpihan dan bahan kimia" },
+  { id:75, category:"安全", term:"防塵マスク", reading:"ぼうじんマスク", definition_ja:"粉じんや有害物質を吸い込まないためのマスク", definition_id:"Masker debu: masker pelindung agar tidak menghirup debu dan zat berbahaya" },
+  { id:76, category:"安全", term:"整理整頓", reading:"せいりせいとん", definition_ja:"作業場所を片付けて安全に保つこと", definition_id:"Kerapian dan keteraturan: menjaga area kerja tetap bersih dan teratur demi keselamatan" },
+  { id:77, category:"安全", term:"ヒヤリハット", reading:"ヒヤリハット", definition_ja:"事故にはならなかったが危険だった体験", definition_id:"Near miss: kejadian berbahaya yang hampir menjadi kecelakaan" },
+  { id:78, category:"安全", term:"危険予知", reading:"きけんよち（KY）", definition_ja:"これから行う作業にある危険を事前に予測すること", definition_id:"Kiken Yochi (KY): perkiraan bahaya yang mungkin terjadi sebelum memulai pekerjaan" },
+  { id:79, category:"安全", term:"安全標識", reading:"あんぜんひょうしき", definition_ja:"危険を知らせたり行動を指示したりする表示板", definition_id:"Rambu keselamatan: papan tanda yang memberi peringatan atau instruksi keselamatan" },
+  { id:80, category:"安全", term:"救急箱", reading:"きゅうきゅうばこ", definition_ja:"けがや病気のときに使う応急処置用品の箱", definition_id:"Kotak P3K: kotak berisi perlengkapan pertolongan pertama untuk kecelakaan dan cedera" },
+  { id:81, category:"図面", term:"施工図", reading:"せこうず", definition_ja:"実際の工事をするための詳しい設計図", definition_id:"Gambar kerja: gambar teknis detail sebagai acuan pelaksanaan konstruksi" },
+  { id:82, category:"図面", term:"平面図", reading:"へいめんず", definition_ja:"建物を上から見た図面", definition_id:"Denah: gambar bangunan dilihat dari atas (tampak atas)" },
+  { id:83, category:"図面", term:"立面図", reading:"りつめんず", definition_ja:"建物を横から見た図面", definition_id:"Tampak samping: gambar bangunan dilihat dari sisi depan atau samping" },
+  { id:84, category:"図面", term:"断面図", reading:"だんめんず", definition_ja:"建物を切断して内部を見せた図面", definition_id:"Gambar potongan: gambar yang memperlihatkan bagian dalam bangunan" },
+  { id:85, category:"図面", term:"凡例", reading:"はんれい", definition_ja:"図面の記号・線・色の意味を説明した表", definition_id:"Legenda: tabel penjelasan arti simbol, garis, dan warna pada gambar" },
+  { id:86, category:"図面", term:"縮尺", reading:"しゅくしゃく", definition_ja:"実際の寸法を縮小した割合（例：1/50）", definition_id:"Skala gambar: perbandingan ukuran gambar dengan ukuran sebenarnya (contoh: 1:50)" },
+  { id:87, category:"図面", term:"寸法", reading:"すんぽう", definition_ja:"物の長さや大きさを示す数値", definition_id:"Dimensi: angka yang menunjukkan panjang atau ukuran suatu benda" },
+  { id:88, category:"図面", term:"記号", reading:"きごう", definition_ja:"図面で設備や材料を表す印・マーク", definition_id:"Simbol: tanda atau lambang yang mewakili perangkat atau material pada gambar" },
+  { id:89, category:"図面", term:"配管系統図", reading:"はいかんけいとうず", definition_ja:"配管の全体的なつながりを示した図", definition_id:"Diagram sistem perpipaan: gambar yang menunjukkan jaringan pipa secara keseluruhan" },
+  { id:90, category:"図面", term:"単線図", reading:"たんせんず", definition_ja:"電気回路を1本の線で簡略化した図面", definition_id:"Diagram satu garis: gambar sirkuit listrik yang disederhanakan dengan satu garis" },
+  { id:91, category:"図面", term:"GL", reading:"ジーエル（地盤面）", definition_ja:"地面の高さを示す基準線（Ground Level）", definition_id:"GL (Ground Level): garis referensi yang menunjukkan tinggi permukaan tanah" },
+  { id:92, category:"図面", term:"FL", reading:"エフエル（床面）", definition_ja:"各階の床の高さを示す基準線（Floor Level）", definition_id:"FL (Floor Level): garis referensi yang menunjukkan ketinggian lantai tiap lantai" },
+  { id:93, category:"図面", term:"墨出し", reading:"すみだし", definition_ja:"図面の寸法を実際の現場に印す作業", definition_id:"Marking / pembuatan garis: memindahkan dimensi gambar ke lokasi konstruksi nyata" },
+  { id:94, category:"図面", term:"通り芯", reading:"とおりしん", definition_ja:"柱や壁の中心を示す基準の線", definition_id:"As bangunan: garis referensi yang menunjukkan pusat kolom atau dinding" },
+  { id:95, category:"図面", term:"貫通孔", reading:"かんつうこう", definition_ja:"壁や床に管や線を通すために開けた穴", definition_id:"Lubang tembus: lubang yang dibuat pada dinding atau lantai untuk melewatkan pipa atau kabel" },
+  { id:96,  category:"工具・機械", term:"レンチ", reading:"レンチ", definition_ja:"ボルトやナットを締めたり緩めたりする工具", definition_id:"Kunci pas / kunci inggris: alat untuk mengencangkan atau mengendurkan baut dan mur" },
+  { id:97,  category:"工具・機械", term:"ドライバー", reading:"ドライバー", definition_ja:"ねじを締めたり緩めたりする工具", definition_id:"Obeng: alat untuk mengencangkan atau mengendurkan sekrup" },
+  { id:98,  category:"工具・機械", term:"パイプカッター", reading:"パイプカッター", definition_ja:"金属管や塩ビ管を切断する工具", definition_id:"Pemotong pipa: alat untuk memotong pipa logam atau PVC" },
+  { id:99,  category:"工具・機械", term:"電動ドリル", reading:"でんどうドリル", definition_ja:"壁や床に穴を開けるための電動工具", definition_id:"Bor listrik: alat tenaga listrik untuk membuat lubang di dinding atau lantai" },
+  { id:100, category:"工具・機械", term:"グラインダー", reading:"グラインダー", definition_ja:"金属を削ったり切断したりする電動工具", definition_id:"Grinder: alat listrik untuk menghaluskan atau memotong logam" },
+  { id:101, category:"工具・機械", term:"水平器", reading:"すいへいき", definition_ja:"面が水平か垂直かを確認する計測器", definition_id:"Waterpass / nivo: alat ukur untuk memeriksa apakah permukaan datar atau tegak lurus" },
+  { id:102, category:"工具・機械", term:"巻尺", reading:"まきじゃく（コンベックス）", definition_ja:"長さを測るための伸び縮みするスチール製の尺", definition_id:"Meteran: alat ukur panjang dari baja yang bisa digulung" },
+  { id:103, category:"工具・機械", term:"ハンマー", reading:"ハンマー（金槌）", definition_ja:"物を打ち込んだり叩いたりする打撃工具", definition_id:"Palu: alat untuk memukul atau menancapkan benda" },
+  { id:104, category:"工具・機械", term:"トーチランプ", reading:"トーチランプ", definition_ja:"配管の溶接や接合に使うガスバーナー", definition_id:"Torch lamp: pembakar gas yang digunakan untuk menyambung atau mengelas pipa" },
+  { id:105, category:"工具・機械", term:"クレーン", reading:"クレーン", definition_ja:"重い材料や機器を持ち上げて移動する機械", definition_id:"Crane: mesin untuk mengangkat dan memindahkan material atau peralatan berat" },
+  { id:106, category:"工具・機械", term:"高所作業車", reading:"こうしょさぎょうしゃ", definition_ja:"高い場所での作業のために使う車両型の足場", definition_id:"Kendaraan platform tinggi: kendaraan dengan platform yang bisa naik untuk kerja di ketinggian" },
+  { id:107, category:"工具・機械", term:"絶縁テープ", reading:"ぜつえんテープ", definition_ja:"電線の接続部分を絶縁するためのビニールテープ", definition_id:"Isolasi listrik: selotip vinil untuk mengisolasi sambungan kabel" },
+  { id:108, category:"工具・機械", term:"シールテープ", reading:"シールテープ", definition_ja:"ねじ接合部の水やガスの漏れを防ぐテープ", definition_id:"Seal tape (teflon tape): selotip untuk mencegah kebocoran air atau gas pada sambungan ulir" },
+  { id:109, category:"工具・機械", term:"レベル（測量器）", reading:"レベル（そくりょうき）", definition_ja:"地面や建物の高低差を測る測量機器", definition_id:"Alat ukur ketinggian: alat survei untuk mengukur perbedaan ketinggian tanah atau bangunan" }
+];
+
+// ===== STATE =====
+let filteredCards = [...CARDS];
+let currentIndex = 0;
+let isFlipped = false;
+let markedIds = JSON.parse(localStorage.getItem('kensetsu_marked') || '[]');
+let seenIds = JSON.parse(localStorage.getItem('kensetsu_seen') || '[]');
+let currentCat = 'すべて';
+
+// ===== CATEGORY BUTTONS =====
+function buildCatButtons() {
+  const cats = ['すべて', ...new Set(CARDS.map(c => c.category)), '⭐ スター'];
+  const wrap = document.getElementById('catButtons');
+  wrap.innerHTML = '';
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (cat === currentCat ? ' active' : '');
+    const count = cat === 'すべて' ? CARDS.length :
+                  cat === '⭐ スター' ? markedIds.length :
+                  CARDS.filter(c => c.category === cat).length;
+    btn.textContent = `${cat}（${count}）`;
+    btn.onclick = () => selectCat(cat);
+    wrap.appendChild(btn);
+  });
+}
+
+function selectCat(cat) {
+  currentCat = cat;
+  if (cat === 'すべて') filteredCards = [...CARDS];
+  else if (cat === '⭐ スター') filteredCards = CARDS.filter(c => markedIds.includes(c.id));
+  else filteredCards = CARDS.filter(c => c.category === cat);
+  currentIndex = 0;
+  buildCatButtons();
+
+  if (currentMode === 'flash') {
+    renderCard();
+  } else {
+    // クイズモード：問題画面中なら即リスタート、スタート画面なら件数だけ更新
+    const onQuestion = document.getElementById('quizQuestionScreen').style.display !== 'none';
+    if (onQuestion) {
+      if (filteredCards.length < 4) {
+        alert('このカテゴリのカードが4枚未満のため、クイズを開始できません。');
+        showQuizStart();
+        return;
+      }
+      startQuiz();
+    } else {
+      showQuizStart();
+    }
+  }
+}
+
+// ===== CARD RENDER =====
+function renderCard() {
+  const panel = document.getElementById('resultPanel');
+  const cardArea = document.getElementById('cardArea');
+
+  if (filteredCards.length === 0) {
+    cardArea.style.display = 'none';
+    document.querySelector('.controls').style.display = 'none';
+    panel.innerHTML = '<p style="color:var(--text-sub);font-size:0.9rem;padding:40px 0;">このカテゴリにカードがありません</p>';
+    panel.classList.add('show');
+    updateHeader();
+    return;
+  }
+
+  panel.classList.remove('show');
+  cardArea.style.display = 'block';
+  document.querySelector('.controls').style.display = 'flex';
+
+  setFlipped(false);
+
+  const card = filteredCards[currentIndex];
+  document.getElementById('frontCat').textContent = card.category;
+  if (appRubyEnabled && card.reading) {
+    document.getElementById('termKanji').innerHTML = `<ruby>${card.term}<rt>${card.reading}</rt></ruby>`;
+    document.getElementById('termReading').textContent = '';
+  } else {
+    document.getElementById('termKanji').textContent = card.term;
+    document.getElementById('termReading').textContent = card.reading;
+  }
+  document.getElementById('backCat').textContent = card.category;
+  document.getElementById('backTerm').textContent = card.term;
+  if (appRubyEnabled) {
+    document.getElementById('defJa').innerHTML = addRubyToText(card.definition_ja);
+  } else {
+    document.getElementById('defJa').textContent = card.definition_ja;
+  }
+  document.getElementById('defId').textContent = card.definition_id;
+  document.getElementById('cardNum').textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+
+  const markBtn = document.getElementById('markBtn');
+  markBtn.textContent = markedIds.includes(card.id) ? '⭐ スター済' : '⭐ スター';
+  markBtn.classList.toggle('marked', markedIds.includes(card.id));
+
+  updateProgress();
+  updateHeader();
+}
+
+function updateProgress() {
+  const total = filteredCards.length;
+  const seen = filteredCards.filter(c => seenIds.includes(c.id)).length;
+  const pct = total ? Math.round(seen / total * 100) : 0;
+  document.getElementById('progressLabel').textContent = `学習済み ${seen} / ${total} 枚`;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function updateHeader() {
+  document.getElementById('headerCount').textContent = `${filteredCards.length} 枚`;
+}
+
+// ===== FLIP =====
+function setFlipped(val) {
+  isFlipped = val;
+  document.getElementById('cardArea').classList.toggle('flipped', val);
+}
+
+function flipCard() {
+  setFlipped(!isFlipped);
+  // 裏面を見たとき（意味を確認したとき）に学習済みとしてカウント
+  if (isFlipped) {
+    const card = filteredCards[currentIndex];
+    if (card && !seenIds.includes(card.id)) {
+      seenIds.push(card.id);
+      localStorage.setItem('kensetsu_seen', JSON.stringify(seenIds));
+      updateProgress();
+    }
+  }
+}
+
+// ===== NAV =====
+function nextCard() {
+  if (currentIndex < filteredCards.length - 1) {
+    currentIndex++;
+    renderCard();
+  } else {
+    showResult();
+  }
+}
+
+function prevCard() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderCard();
+  }
+}
+
+function showResult() {
+  const total = filteredCards.length;
+  const seen = filteredCards.filter(c => seenIds.includes(c.id)).length;
+  const panel = document.getElementById('resultPanel');
+  document.getElementById('resultMsg').textContent =
+    `${total}枚中 ${seen}枚を学習しました！おつかれさまでした 🎉`;
+  panel.classList.add('show');
+  document.getElementById('cardArea').style.display = 'none';
+  document.querySelector('.controls').style.display = 'none';
+}
+
+function restartAll() {
+  currentIndex = 0;
+  document.getElementById('cardArea').style.display = 'block';
+  document.querySelector('.controls').style.display = 'flex';
+  document.getElementById('resultPanel').classList.remove('show');
+  renderCard();
+}
+
+// ===== SHUFFLE =====
+function shuffleCards() {
+  for (let i = filteredCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+  }
+  currentIndex = 0;
+  renderCard();
+}
+
+// ===== MARK =====
+function toggleMark() {
+  const card = filteredCards[currentIndex];
+  if (!card) return;
+  if (markedIds.includes(card.id)) {
+    markedIds = markedIds.filter(id => id !== card.id);
+  } else {
+    markedIds.push(card.id);
+  }
+  localStorage.setItem('kensetsu_marked', JSON.stringify(markedIds));
+  buildCatButtons();
+  renderCard();
+}
+
+// ===== RESET =====
+function resetProgress() {
+  if (!confirm('学習進捗をリセットしますか？')) return;
+  seenIds = [];
+  localStorage.removeItem('kensetsu_seen');
+  currentIndex = 0;
+  renderCard();
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextCard();
+  else if (e.key === 'ArrowLeft') prevCard();
+  else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+});
+
+// ===== TOUCH SWIPE =====
+let touchStartX = 0;
+document.getElementById('cardArea').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('cardArea').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 60) {
+    if (dx < 0) nextCard(); else prevCard();
+  } else {
+    flipCard();
+  }
+}, { passive: true });
+
+// ===== PASSWORD VISIBILITY TOGGLE =====
+function togglePwVisibility() {
+  const input = document.getElementById('loginInput');
+  const btn   = document.getElementById('togglePwBtn');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+    btn.title = 'パスワードを隠す';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+    btn.title = 'パスワードを表示';
+  }
+}
+
+// ===== LOGIN =====
+const APP_PASSWORD = 'goukaku2026'; // ← パスワードはここで変更できます
+
+function doLogin() {
+  const input = document.getElementById('loginInput').value;
+  if (input === APP_PASSWORD) {
+    localStorage.setItem('kensetsu_auth', '1');
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('loginInput').value = '';
+    document.getElementById('loginError').classList.remove('show');
+  } else {
+    document.getElementById('loginError').classList.add('show');
+    document.getElementById('loginInput').value = '';
+    document.getElementById('loginInput').focus();
+  }
+}
+
+if (localStorage.getItem('kensetsu_auth') === '1') {
+  document.getElementById('loginOverlay').style.display = 'none';
+} else {
+  setTimeout(() => document.getElementById('loginInput').focus(), 100);
+}
+
+// ===========================
+// ===== QUIZ LOGIC ==========
+// ===========================
+let currentMode = 'flash';
+let quizQtype = 'mixed';
+let quizQnum  = 20;
+let quizDeck  = [];
+let quizIndex = 0;
+let quizScore = 0;
+let quizWrongCards = [];
+let quizCurrent = null;
+let isRetryMode = false;
+let showIdInQuiz  = false;
+let appRubyEnabled   = false;
+let showIdInChoices  = false;
+
+// ===== 内蔵ルビ辞書（建設・設備用語） =====
+const RUBY_DICT = {
+  // 建設・設備専門語（長いものから先）
+  '配管系統図':'はいかんけいとうず','高所作業車':'こうしょさぎょうしゃ',
+  '作業主任者':'さぎょうしゅにんしゃ','作業手順書':'さぎょうてじゅんしょ',
+  '安全標識':'あんぜんひょうしき','整理整頓':'せいりせいとん',
+  '衛生設備':'えいせいせつび','接地抵抗':'せっちていこう',
+  '貯水槽':'ちょすいそう','浄化槽':'じょうかそう','逆止弁':'ぎゃくしべん',
+  '墜落防止':'ついらくぼうし','危険予知':'きけんよち',
+  '立入禁止':'たちいりきんし','火気厳禁':'かきげんきん',
+  '防塵マスク':'ぼうじんマスク','救急箱':'きゅうきゅうばこ',
+  '配管系統':'はいかんけいとう','配管内':'はいかんない',
+  '保護具':'ほごぐ','安全帯':'あんぜんたい',
+  '流量計':'りゅうりょうけい','圧力計':'あつりょくけい',
+  '水圧試験':'すいあつしけん','気密試験':'きみつしけん',
+  '排水トラップ':'はいすいトラップ','止水栓':'しすいせん',
+  '電線管':'でんせんかん','分電盤':'ぶんでんばん',
+  '照明器具':'しょうめいきぐ','接続口':'せつぞくぐち',
+  '変圧器':'へんあつき','検電器':'けんでんき',
+  '消火栓':'しょうかせん','換気扇':'かんきせん',
+  '大便器':'だいべんき','洗面器':'せんめんき','給湯器':'きゅうとうき',
+  '水道メーター':'すいどうメーター','施工図':'せこうず',
+  '平面図':'へいめんず','立面図':'りつめんず','断面図':'だんめんず',
+  '配管系':'はいかんけい','単線図':'たんせんず','通り芯':'とおりしん',
+  '貫通孔':'かんつうこう','墨出し':'すみだし','縮尺':'しゅくしゃく',
+  '水平器':'すいへいき','高所作業':'こうしょさぎょう','電動ドリル':'でんどうドリル',
+  '保温材':'ほおんざい','継手':'つぎて','溶接':'ようせつ',
+  '給水管':'きゅうすいかん','排水管':'はいすいかん','給湯管':'きゅうとうかん',
+  '給湯':'きゅうとう','排水':'はいすい','給水':'きゅうすい',
+  '鋼管':'こうかん','銅管':'どうかん','塩ビ管':'えんびかん',
+  '電線':'でんせん','配線':'はいせん','幹線':'かんせん',
+  '漏電':'ろうでん','感電':'かんでん','絶縁':'ぜつえん',
+  '電圧':'でんあつ','電流':'でんりゅう','電力':'でんりょく',
+  '配管':'はいかん','足場':'あしば','酸素':'さんそ',
+  // 一般建設・工事語
+  '建物':'たてもの','設置':'せっち','工事':'こうじ','供給':'きょうきゅう',
+  '金属':'きんぞく','保護':'ほご','流体':'りゅうたい',
+  '断熱':'だんねつ','接合':'せつごう','高熱':'こうねつ','管端':'かんたん',
+  '検査':'けんさ','窒素':'ちっそ','部品':'ぶひん','管路':'かんろ',
+  '調節':'ちょうせつ','空気':'くうき','水圧':'すいあつ',
+  '電気':'でんき','建設':'けんせつ','設備':'せつび','機器':'きき',
+  '温度':'おんど','湿度':'しつど','循環':'じゅんかん','空調':'くうちょう',
+  '消火':'しょうか','火災':'かさい','自動':'じどう','散布':'さんぷ',
+  '清潔':'せいけつ','汚水':'おすい','処理':'しょり','計量':'けいりょう',
+  '液体':'えきたい','気体':'きたい','移送':'いそう','貯水':'ちょすい',
+  '作業':'さぎょう','落下':'らっか','衝撃':'しょうげき','高所':'こうしょ',
+  '安全':'あんぜん','危険':'きけん','予測':'よそく','手順':'てじゅん',
+  '書類':'しょるい','禁止':'きんし','区域':'くいき','責任者':'せきにんしゃ',
+  '管理':'かんり','仮設':'かせつ','欠乏':'けつぼう',
+  '粉塵':'ふんじん','有害':'ゆうがい','物質':'ぶっしつ',
+  '整理':'せいり','整頓':'せいとん','事故':'じこ',
+  '設計図':'せっけいず','図面':'ずめん','記号':'きごう',
+  '寸法':'すんぽう','縮小':'しゅくしょう','割合':'わりあい',
+  '材料':'ざいりょう','全体':'ぜんたい','回路':'かいろ',
+  '基準':'きじゅん','地盤':'じばん','高低差':'こうていさ',
+  '測量':'そくりょう','現場':'げんば','中心':'ちゅうしん',
+  '貫通':'かんつう','切断':'せつだん','電動':'でんどう',
+  '水平':'すいへい','垂直':'すいちょく','確認':'かくにん',
+  '打撃':'だげき','移動':'いどう','車両':'しゃりょう',
+  '壁':'かべ','柱':'はしら','床':'ゆか',
+  '単位':'たんい','測定':'そくてい','計測':'けいそく',
+  '抵抗':'ていこう','能力':'のうりょく','主要':'しゅよう',
+  '接続':'せつぞく','照明':'しょうめい','蛍光灯':'けいこうとう',
+  '過電流':'かでんりゅう','地面':'じめん',
+  '管':'かん','水':'みず','熱':'ねつ','穴':'あな',
+  '温水':'おんすい','雨水':'あまみず','下水':'げすい',
+  '応急':'おうきゅう','処置':'しょち','長さ':'ながさ',
+  '数値':'すうち','重い':'おもい','表示板':'ひょうじばん',
+};
+
+const RUBY_ENTRIES = Object.entries(RUBY_DICT)
+  .sort((a, b) => b[0].length - a[0].length);
+
+function addRubyToText(plainText) {
+  if (!plainText) return plainText;
+  let s = plainText;
+  const marks = [];
+  for (const [term, reading] of RUBY_ENTRIES) {
+    if (s.includes(term)) {
+      const marker = `\x00${marks.length}\x00`;
+      marks.push(`<ruby>${term}<rt>${reading}</rt></ruby>`);
+      s = s.split(term).join(marker);
+    }
+  }
+  s = s.replace(/\x00(\d+)\x00/g, (_, i) => marks[Number(i)]);
+  return s;
+}
+
+// ===== INIT =====
+buildCatButtons();
+renderCard();
+
+// ===== グローバルルビトグル =====
+function toggleGlobalRuby() {
+  appRubyEnabled = !appRubyEnabled;
+  const sw = document.getElementById('globalRubySwitch');
+  const txt = document.getElementById('globalRubyText');
+  txt.textContent = appRubyEnabled ? 'ON' : 'OFF';
+  txt.classList.toggle('on', appRubyEnabled);
+  sw.classList.toggle('on', appRubyEnabled);
+  if (currentMode === 'flash') {
+    renderCard();
+  } else if (quizCurrent) {
+    renderQuizQuestion_reapply();
+  }
+}
+
+function renderQuizQuestion_reapply() {
+  if (!quizCurrent) return;
+  const { card, type } = quizCurrent;
+  if (type === 'term2def') {
+    document.getElementById('qQuestionText').innerHTML =
+      appRubyEnabled ? `「<ruby>${card.term}<rt>${card.reading||''}</rt></ruby>」` : `「${card.term}」`;
+  } else {
+    document.getElementById('qQuestionText').innerHTML =
+      appRubyEnabled ? addRubyToText(card.definition_ja) : card.definition_ja;
+  }
+  rerenderChoiceLabels();
+}
+
+// ---- mode switch ----
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('flashScreen').classList.toggle('hidden', mode !== 'flash');
+  document.getElementById('quizScreen').classList.toggle('active',  mode === 'quiz');
+  document.getElementById('tabFlash').classList.toggle('active', mode === 'flash');
+  document.getElementById('tabQuiz').classList.toggle('active',  mode === 'quiz');
+  document.getElementById('bottomBarFlash').style.display = mode === 'flash' ? 'flex' : 'none';
+  document.getElementById('bottomBarQuiz').classList.toggle('active', mode === 'quiz');
+  if (mode === 'quiz') {
+    showQuizStart();
+  }
+}
+
+// ---- quiz type selection ----
+function selectQtype(type) {
+  quizQtype = type;
+  ['optMixed','optTerm2Def','optDef2Term'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  const map = { mixed:'optMixed', term2def:'optTerm2Def', def2term:'optDef2Term' };
+  document.getElementById(map[type]).classList.add('selected');
+}
+
+function selectQnum(n) {
+  quizQnum = n;
+  ['qnum10','qnum20','qnumAll'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  const map = { 10:'qnum10', 20:'qnum20', 0:'qnumAll' };
+  document.getElementById(map[n]).classList.add('selected');
+}
+
+// ---- show start screen ----
+function showQuizStart() {
+  document.getElementById('quizStartScreen').style.display = 'block';
+  document.getElementById('quizQuestionScreen').style.display = 'none';
+  document.getElementById('quizResultScreen').classList.remove('show');
+  // カテゴリバッジ更新
+  document.getElementById('quizCatName').textContent = currentCat;
+  document.getElementById('quizCatCount').textContent = filteredCards.length;
+}
+
+// ---- start quiz ----
+function startQuiz(retryCards) {
+  const pool = retryCards || filteredCards;
+  if (pool.length < 4) {
+    alert('このカテゴリの用語が4枚未満です。「すべて」を選んでください。');
+    return;
+  }
+  quizDeck = [...pool].sort(() => Math.random() - 0.5);
+  if (!retryCards && quizQnum > 0) quizDeck = quizDeck.slice(0, quizQnum);
+  quizIndex = 0;
+  quizScore = 0;
+  quizWrongCards = [];
+  document.getElementById('quizStartScreen').style.display = 'none';
+  document.getElementById('quizQuestionScreen').style.display = 'block';
+  document.getElementById('quizResultScreen').classList.remove('show');
+  renderQuizQuestion();
+}
+
+// ---- generate question ----
+function generateQuestion(card, type) {
+  const others = CARDS.filter(c => c.id !== card.id)
+                      .sort(() => Math.random() - 0.5).slice(0, 3);
+  const correctIdx = Math.floor(Math.random() * 4);
+  const choices = [...others];
+  choices.splice(correctIdx, 0, card);
+  return { card, type, choices, correctIdx };
+}
+
+// ---- render question ----
+function renderQuizQuestion() {
+  const card = quizDeck[quizIndex];
+  let type = quizQtype;
+  if (type === 'mixed') type = Math.random() < 0.5 ? 'term2def' : 'def2term';
+
+  quizCurrent = generateQuestion(card, type);
+
+  const total = quizDeck.length;
+  document.getElementById('qScoreCorrect').textContent = quizScore;
+  document.getElementById('qScoreTotal').textContent = total;
+  document.getElementById('qMiniFill').style.width = (quizIndex / total * 100) + '%';
+  document.getElementById('qScorePct').textContent =
+    quizIndex > 0 ? Math.round(quizScore / quizIndex * 100) + '%' : '-';
+  document.getElementById('qNumLabel').textContent = `第${quizIndex + 1}問 / ${total}問`;
+
+  if (type === 'term2def') {
+    document.getElementById('qTypeLabel').textContent = '用語→意味';
+    if (appRubyEnabled && card.reading) {
+      document.getElementById('qQuestionText').innerHTML =
+        `「<ruby>${card.term}<rt>${card.reading}</rt></ruby>」`;
+      document.getElementById('qQuestionSub').textContent = 'の意味はどれですか？';
+    } else {
+      document.getElementById('qQuestionText').textContent = `「${card.term}」`;
+      document.getElementById('qQuestionSub').textContent =
+        card.reading ? `（${card.reading}）の意味はどれですか？` : 'の意味はどれですか？';
+    }
+  } else {
+    document.getElementById('qTypeLabel').textContent = '意味→用語';
+    if (appRubyEnabled) {
+      document.getElementById('qQuestionText').innerHTML = addRubyToText(card.definition_ja);
+    } else {
+      document.getElementById('qQuestionText').textContent = card.definition_ja;
+    }
+    document.getElementById('qQuestionSub').textContent = '上の説明にあてはまる用語はどれですか？';
+  }
+
+  quizCurrent.choices.forEach((c, i) => {
+    const btn = document.getElementById('choice' + i);
+    btn.className = 'quiz-choice';
+    btn.disabled = false;
+  });
+  rerenderChoiceLabels();
+
+  document.getElementById('qChoiceIdToggleBtn').style.display =
+    type === 'term2def' ? 'inline-flex' : 'none';
+  applyChoiceIdState();
+
+  document.getElementById('qIdText').textContent = card.definition_id;
+  applyQuizIdState();
+
+  const fb = document.getElementById('qFeedback');
+  fb.className = 'quiz-feedback';
+  document.getElementById('qNextBtn').className = 'quiz-next-btn';
+}
+
+function toggleQuizId() {
+  showIdInQuiz = !showIdInQuiz;
+  applyQuizIdState();
+}
+
+function choiceHTML(card, type) {
+  if (type === 'term2def') {
+    const jaText = appRubyEnabled ? addRubyToText(card.definition_ja) : card.definition_ja;
+    const useHtml = appRubyEnabled || showIdInChoices;
+    if (showIdInChoices && card.definition_id) {
+      return { html: true, text:
+        `<span style="display:block;line-height:1.7;">${jaText}</span>` +
+        `<span style="display:block;margin-top:7px;padding-top:7px;border-top:1px solid rgba(0,0,0,0.1);font-size:0.78em;font-weight:normal;color:#6b7280;line-height:1.5;">` +
+        `<span style="font-size:0.7em;font-weight:bold;color:#b45309;margin-right:4px;">🇮🇩</span>${card.definition_id}</span>`
+      };
+    }
+    return { html: useHtml, text: jaText };
+  }
+  if (appRubyEnabled && card.reading) {
+    return { html: true, text: `<ruby>${card.term}<rt>${card.reading}</rt></ruby>` };
+  }
+  return { html: false, text: card.term };
+}
+
+function toggleChoiceId() {
+  showIdInChoices = !showIdInChoices;
+  applyChoiceIdState();
+  rerenderChoiceLabels();
+}
+
+function applyChoiceIdState() {
+  const btn   = document.getElementById('qChoiceIdToggleBtn');
+  const label = document.getElementById('qChoiceIdToggleLabel');
+  if (!btn) return;
+  if (showIdInChoices) {
+    btn.classList.add('active');
+    label.textContent = 'インドネシア語あり';
+  } else {
+    btn.classList.remove('active');
+    label.textContent = 'インドネシア語なし';
+  }
+}
+
+function rerenderChoiceLabels() {
+  if (!quizCurrent) return;
+  const { type, choices } = quizCurrent;
+  choices.forEach((c, i) => {
+    const btn = document.getElementById('choice' + i);
+    if (!btn) return;
+    const { html, text } = choiceHTML(c, type);
+    if (html) btn.innerHTML = text;
+    else btn.textContent = text;
+  });
+}
+
+function applyQuizIdState() {
+  const btn   = document.getElementById('qIdToggleBtn');
+  const box   = document.getElementById('qIdBox');
+  const label = document.getElementById('qIdToggleLabel');
+  if (showIdInQuiz) {
+    box.classList.add('show');
+    btn.classList.add('active');
+    label.textContent = 'インドネシア語を隠す';
+  } else {
+    box.classList.remove('show');
+    btn.classList.remove('active');
+    label.textContent = 'インドネシア語を表示';
+  }
+}
+
+// ---- handle answer ----
+function handleAnswer(chosenIdx) {
+  const { card, type, choices, correctIdx } = quizCurrent;
+  const isCorrect = chosenIdx === correctIdx;
+
+  for (let i = 0; i < 4; i++) document.getElementById('choice' + i).disabled = true;
+
+  document.getElementById('choice' + correctIdx).classList.add('correct');
+  if (!isCorrect) document.getElementById('choice' + chosenIdx).classList.add('wrong');
+
+  const fb = document.getElementById('qFeedback');
+  fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'ng');
+  document.getElementById('fbAnswer').textContent =
+    isCorrect ? '✅ 正解！' : `❌ 不正解　正解：「${card.term}」`;
+  document.getElementById('fbDef').textContent = card.definition_ja;
+  document.getElementById('fbDefIdText').textContent = card.definition_id;
+
+  if (isCorrect) {
+    quizScore++;
+  } else {
+    if (!quizWrongCards.find(c => c.id === card.id)) quizWrongCards.push(card);
+  }
+
+  const total = quizDeck.length;
+  document.getElementById('qScoreCorrect').textContent = quizScore;
+  if (quizIndex + 1 > 0) {
+    document.getElementById('qScorePct').textContent =
+      Math.round(quizScore / (quizIndex + 1) * 100) + '%';
+  }
+
+  document.getElementById('qNextBtn').className = 'quiz-next-btn show';
+  document.getElementById('qNextBtn').textContent =
+    quizIndex + 1 >= total ? '結果を見る ›' : '次の問題 ›';
+}
+
+// ---- next question ----
+function nextQuizQuestion() {
+  quizIndex++;
+  if (quizIndex >= quizDeck.length) {
+    showQuizResult();
+  } else {
+    renderQuizQuestion();
+  }
+}
+
+// ---- result ----
+function showQuizResult() {
+  document.getElementById('quizQuestionScreen').style.display = 'none';
+  const total = quizDeck.length;
+  const pct = Math.round(quizScore / total * 100);
+  let emoji = '😢', title = 'もう少し！';
+  if (pct >= 80) { emoji = '🎉'; title = '素晴らしい！'; }
+  else if (pct >= 60) { emoji = '😊'; title = 'よくできました！'; }
+  else if (pct >= 40) { emoji = '🙂'; title = 'もう一息！'; }
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScoreDisplay').textContent = `${quizScore} / ${total}`;
+  document.getElementById('resultScoreLabel').textContent = `正解率 ${pct}%`;
+  document.getElementById('rcCorrect').textContent = quizScore;
+  document.getElementById('rcWrong').textContent = total - quizScore;
+
+  const retryBtn = document.getElementById('retryWrongBtn');
+  if (quizWrongCards.length > 0) {
+    retryBtn.style.display = '';
+    retryBtn.textContent = `❌ 間違えた${quizWrongCards.length}問を復習`;
+  } else {
+    retryBtn.style.display = 'none';
+  }
+
+  document.getElementById('quizResultScreen').classList.add('show');
+}
+
+// ---- retry wrong ----
+function retryWrong() {
+  if (quizWrongCards.length === 0) return;
+  startQuiz(quizWrongCards);
+}
+</script>
+</body>
+</html>
